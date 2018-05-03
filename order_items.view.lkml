@@ -2,15 +2,24 @@ view: order_items {
   sql_table_name: public.order_items ;;
 
   dimension: id {
-    primary_key: yes
+#     primary_key: yes
     type: number
+    hidden: yes
     sql: ${TABLE}.id ;;
+  }
+
+  dimension: pk {
+    type: string
+    hidden:  yes
+    primary_key: yes
+    sql:  ${id} || '-' || ${user_id}  ;;
   }
 
   dimension_group: created {
     type: time
     timeframes: [
       raw,
+      hour_of_day,
       time,
       date,
       week,
@@ -20,6 +29,13 @@ view: order_items {
     ]
     sql: ${TABLE}.created_at ;;
   }
+
+#   dimension: created_week {
+#     type: date_week
+#     sql:  ${TABLE}.created_at ;;
+#   }
+
+
 
   dimension_group: delivered {
     type: time
@@ -61,8 +77,9 @@ view: order_items {
   }
 
   dimension: sale_price {
+#     group_label: "Row Level Data"
     type: number
-    sql: ${TABLE}.sale_price ;;
+    sql: ${TABLE}.sale_price * .8 ;;
   }
 
   dimension_group: shipped {
@@ -80,15 +97,28 @@ view: order_items {
   }
 
   dimension: status {
+#     group_label: "Row Level Data"
     type: string
-    sql: ${TABLE}.status ;;
+    sql: lower(${TABLE}.status) ;;
   }
+
+#   dimension: status_user {
+#     type: string
+#     sql: ${status} || '-' || ${user_id}  ;;
+#   }
 
   dimension: user_id {
     type: number
     # hidden: yes
     sql: ${TABLE}.user_id ;;
   }
+
+  measure: total_sale_price {
+    type: sum
+    sql: ${sale_price}  ;;
+    value_format_name: usd
+  }
+
 
   measure: count {
     type: count
