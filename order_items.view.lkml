@@ -117,7 +117,35 @@ view: order_items {
     type: sum
     sql: ${sale_price}  ;;
     value_format_name: usd
+    drill_fields: [detail*,-id]
+
   }
+
+
+
+  measure: total_sale_price_under_21 {
+    type: sum
+    sql:
+    CASE WHEN  ${users.age} <= {% parameter users.age_threshold %} THEN ${sale_price}
+    ELSE NULL
+    END
+    ;;
+    value_format_name: usd
+    drill_fields: [detail*,-id]
+#     filters: {
+#       field: users.age
+#       value: "<=21"
+#     }
+  }
+
+  measure: average_revenue_per_user {
+    type: number
+    sql: ${total_sale_price}*1.0 / nullif(${users.count},0)  ;;
+    value_format_name: usd
+
+  }
+
+
 
 
   measure: count {
@@ -129,11 +157,14 @@ view: order_items {
   set: detail {
     fields: [
       id,
-      inventory_items.id,
-      inventory_items.product_name,
-      users.id,
-      users.last_name,
-      users.first_name
+      status,
+      sale_price,
+      total_sale_price
+#       inventory_items.id,
+#       inventory_items.product_name,
+#       users.id,
+#       users.last_name,
+#       users.first_name
     ]
   }
 }

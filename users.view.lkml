@@ -70,20 +70,41 @@ view: users {
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
+    map_layer_name: us_states
   }
 
   dimension: traffic_source {
     type: string
     sql: ${TABLE}.traffic_source ;;
   }
+  parameter: age_threshold {
+    type: number
+
+  }
 
   dimension: zip {
     type: zipcode
     sql: ${TABLE}.zip ;;
+#     map_layer_name: u
   }
-
+#Heiarchical Drill Example
+#   3)
   measure: count {
     type: count
-    drill_fields: [id, last_name, first_name, events.count, order_items.count]
+#     drill_fields: [zip,]
+
   }
+#   1)
+  measure: count_state {
+    type: count
+    drill_fields: [zip,count_zip]
+  }
+#   2)
+  measure: count_zip {
+    type: count
+    drill_fields: [zip,count]
+  }
+
+
+
 }

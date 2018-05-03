@@ -14,7 +14,32 @@ explore: order_items {
 #       value: "-NULL"
 #     }
 #   }
+join: products {
+  type: left_outer
+  sql_on: ${inventory_items.product_id} = ${products.id} ;;
+  relationship: many_to_one
 }
 
+join: inventory_items {
+  type: left_outer
+  sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
+  relationship: one_to_one
+}
+
+
+join: users {
+  view_label: "Ordering Users"
+  type: left_outer
+  sql_on: ${order_items.user_id} = ${users.id} ;;
+  relationship: many_to_one
+}
+
+
+}
+
+
+explore: users {
+  view_label: "All Users"
+}
 
 # test
