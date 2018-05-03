@@ -8,6 +8,14 @@ view: user_facts {
       GROUP BY
         1
        ;;
+#       sql_trigger_value:  select current_date;;
+#   persist_for: "500 hours"
+
+  datagroup_trigger: nightly_etl
+
+  distribution_style: even
+  sortkeys: ["user_id"]
+#   indexes: ["id"]
   }
 
   measure: count {

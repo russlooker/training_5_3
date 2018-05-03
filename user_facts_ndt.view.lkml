@@ -6,11 +6,14 @@ view: user_facts_ndt {
     explore_source: order_items {
       column: user_id {}
       column: total_sale_price {}
-      bind_filters: {
-        from_field: order_items.id
-        to_field: order_items.id
-      }
+#       bind_filters: {
+#         from_field: order_items.id
+#         to_field: order_items.id
+#       }
     }
+    datagroup_trigger: nightly_etl
+    distribution_style: even
+    sortkeys: ["user_id"]
   }
   dimension: user_id {
     type: number

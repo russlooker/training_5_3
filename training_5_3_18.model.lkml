@@ -3,10 +3,16 @@ connection: "events_ecommerce"
 include: "*.view.lkml"         # include all views in this project
 include: "*.dashboard.lookml"  # include all dashboards in this project
 
+# persist_for: "24 hours"
 
+datagroup: nightly_etl {
+  sql_trigger: select current_date ;;
+  max_cache_age: "24 hours"
+}
 
 explore: order_items {
   label: "Ecommerce Model"
+  persist_with: nightly_etl
 # The following are ways to attach a mandatory filter in looker
 # The user cannot change:
 #   sql_always_where: ${order_items.order_id} IS NOT NULL ;;
