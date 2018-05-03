@@ -6,6 +6,7 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 
 
 explore: order_items {
+  label: "Ecommerce Model"
 #   sql_always_where: ${order_items.order_id} IS NOT NULL ;;
 #   always_filter: {
 #     filters: {
