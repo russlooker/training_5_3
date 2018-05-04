@@ -100,6 +100,21 @@ view: order_items {
 #     group_label: "Row Level Data"
     type: string
     sql: lower(${TABLE}.status) ;;
+    link: {
+      label: "Help1"
+      url: "https://yahoo.com?{{user_attributes['email']}}"
+      icon_url: "https://looker.com/favicon.ico"
+    }
+    link: {
+      label: "Help2"
+      url: "https://yahoo.com"
+      icon_url: "https://looker.com/favicon.ico"
+    }
+    link: {
+      label: "Help3"
+      url: "https://yahoo.com"
+      icon_url: "https://looker.com/favicon.ico"
+    }
   }
 
 #   dimension: status_user {
