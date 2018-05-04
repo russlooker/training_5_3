@@ -12,6 +12,10 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
+  dimension: my_email {
+    sql: {{ _user_attributes["email"] }} ;;
+  }
+
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
@@ -37,10 +41,27 @@ view: users {
     sql: ${TABLE}.created_at ;;
   }
 
+  filter: selected_emails  {
+    type: string
+    suggest_dimension: users.email
+    suggest_explore: users
+  }
+
+
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
   }
+
+  dimension: email_comparison {
+    type: string
+    sql:
+    CASE WHEN {% condition selected_emails %} ${email} {% endcondition %} THEN 'Group'
+    ELSE 'Rest of Population'
+    END ;;
+  }
+
+
 
   dimension: first_name {
     type: string

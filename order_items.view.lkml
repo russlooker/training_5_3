@@ -118,6 +118,13 @@ view: order_items {
     sql: ${sale_price}  ;;
     value_format_name: usd
     drill_fields: [detail*,-id]
+    html:
+        {% if value > 11500 %}
+        <a style="color:red;"> {{rendered_value}}</a>
+        {% else  %}
+        <a style="color:green;"> {{rendered_value}}</a>
+        {% endif %}
+    ;;
 
   }
 
