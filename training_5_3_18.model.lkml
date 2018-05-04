@@ -1,7 +1,6 @@
-connection: "events_ecommerce"
+include: "training_5_3_18_base.model.lkml"
 
-include: "*.view.lkml"         # include all views in this project
-include: "*.dashboard.lookml"  # include all dashboards in this project
+
 
 # persist_for: "24 hours"
 
@@ -11,45 +10,8 @@ datagroup: nightly_etl {
 }
 
 explore: order_items {
-  label: "Ecommerce Model"
-  persist_with: nightly_etl
-# The following are ways to attach a mandatory filter in looker
-# The user cannot change:
-#   sql_always_where: ${order_items.order_id} IS NOT NULL ;;
-# The user can change:
-  always_filter: {
-    filters: {
-      field: order_items.id
-      value: "NOT NULL"
-    }
-  }
-# conditionally_filter: {
-#   filters: {
-#     field: order_items.created_date
-#     value: "today"
-#   }
-#   unless: [order_items.status]
-# }
+  extends: [order_items_base]
 
-  join: products {
-    type: left_outer
-    sql_on: ${inventory_items.product_id} = ${products.id} ;;
-    relationship: many_to_one
-  }
-
-  join: inventory_items {
-    type: left_outer
-    sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
-    relationship: one_to_one
-  }
-
-
-  join: users {
-    view_label: "Ordering Users"
-    type: left_outer
-    sql_on: ${order_items.user_id} = ${users.id} ;;
-    relationship: many_to_one
-  }
 
   join: user_facts {
     type: left_outer

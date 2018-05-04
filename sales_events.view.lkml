@@ -4,10 +4,13 @@ view: events {
   dimension: id {
     primary_key: yes
     type: number
+    hidden: yes
     sql: ${TABLE}.id ;;
   }
 
   dimension: browser {
+    label: "Users Browser During Session"
+    description: "User Agent at the time of request, sorted into broser family"
     type: string
     sql: ${TABLE}.browser ;;
   }
@@ -37,25 +40,7 @@ view: events {
     sql: ${TABLE}.created_at ;;
   }
 
-  dimension: event_type {
-    type: string
-    sql: ${TABLE}.event_type ;;
-  }
 
-  dimension: ip_address {
-    type: string
-    sql: ${TABLE}.ip_address ;;
-  }
-
-  dimension: latitude {
-    type: number
-    sql: ${TABLE}.latitude ;;
-  }
-
-  dimension: longitude {
-    type: number
-    sql: ${TABLE}.longitude ;;
-  }
 
   dimension: os {
     type: string
@@ -101,5 +86,35 @@ view: events {
   measure: count {
     type: count
     drill_fields: [id, users.id, users.last_name, users.first_name]
+  }
+}
+
+view: events_full {
+  extends: [events]
+  dimension: zip_2 {
+    type: zipcode
+    sql: ${TABLE}.zip ;;
+  }
+  dimension: event_type {
+    type: string
+    sql: ${TABLE}.event_type ;;
+  }
+
+  dimension: ip_address {
+    type: string
+    sql: ${TABLE}.ip_address ;;
+  }
+
+  dimension: latitude {
+    type: number
+    sql: ${TABLE}.latitude ;;
+  }
+
+  dimension: longitude {
+    type: number
+    sql: ${TABLE}.longitude ;;
+  }
+  dimension: user_id {
+    hidden: yes
   }
 }
