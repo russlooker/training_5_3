@@ -15,6 +15,11 @@ view: order_items {
     sql:  ${id} || '-' || ${user_id}  ;;
   }
 
+  dimension: created_string {
+    type: string
+    sql: ${TABLE}.created_at ;;
+  }
+
   dimension_group: created {
     type: time
     timeframes: [
